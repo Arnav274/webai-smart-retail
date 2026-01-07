@@ -1,0 +1,36 @@
+WebAI Smart Retail Security – User Guide
+
+OVERVIEW
+This application detects objects in real time using TensorFlow.js COCO-SSD. It's designed for retail security monitoring to count customers, staff, and items at store entrances.
+
+FEATURES IMPLEMENTED (P1 + P2)
+
+P1 Essentials (40 marks)
+✓ Model Integration: COCO-SSD loads at startup with loading state, warmup tensor pre-allocation, tf.tidy cleanup per detection, metadata panel (name, size MB, backend).
+✓ Media Inputs: Webcam start/stop, image/video upload, drag-drop, rerun button.
+✓ Rendering & UI: Canvas boxes with labels/confidence, class filter toggles, confidence threshold slider.
+✓ Performance: FPS/timing display, backend selector (CPU/WebGL/WASM/WebGPU), responsive layout.
+
+P2 Desirables (40 marks: 2 Gold + 4 Silver)
+✓ Gold 1 – ROI: Draggable/resizable rectangle; only detections inside count.
+✓ Gold 2 – Batch: Multi-image upload, annotated gallery, CSV export (filename, class, score, bbox).
+✓ Silver 1 – Screenshot: Save annotated frame as PNG with timestamp.
+✓ Silver 2 – Legend: Consistent per-class colors across frames and batch.
+✓ Silver 3 – Counts: Real-time per-class tally (e.g., person: 5, backpack: 2).
+✓ Silver 4 – Explainable UI: Top-3 detections per frame + rolling confidence sparkline (30-frame history).
+
+USAGE STEPS
+1. npm install && npm start → http://localhost:3000
+2. Wait for "Model: loaded"
+3. Webcam: click Start, grant permission, detection runs at ~20–30 FPS (WebGL) or ~5–10 FPS (CPU)
+4. Upload: choose file or drag-drop → Run detection
+5. Adjust threshold/filters anytime; overlay updates live
+6. ROI: Toggle on, drag handles to zone monitoring area
+7. Screenshot: save current annotated frame as PNG
+8. Batch: select multiple images, run detection, view gallery, export CSV
+
+ERROR HANDLING: Camera denied → message shown; upload still works. Backend switch failures → message displayed.
+
+GITHUB/STUGIT REPO
+[Insert your CMP stugit URL here once created]
+

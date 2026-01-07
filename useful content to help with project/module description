@@ -1,0 +1,50 @@
+CMP Module Description 2025/26
+Module code CMP-6057A Module Organiser Jeannette Chin
+Title Advanced Web Development
+Description (published on UEA website)
+This module builds on the year one module “Web Based Programming” and the year two
+module “Software Engineering” so that students can build more complex Web applications
+using advanced Web technologies. This module expands on the basic coding learned in
+CMP-4011A. It covers current industry frameworks used to develop rich, secure, and
+maintainable Web applications.
+To take this module, a good understanding of Asynchronous JavaScript is essential, and
+students must have already mastered basic JavaScript programming skills. Note: JavaScript
+is not Java. In this module, students will learn advanced JavaScript programming
+techniques for building Client-side driven Web Applications. Current technologies used to
+enhance performance will also be discussed and explored.
+WebML is a next generation app technology pioneered by Google which will be covered as
+well. Students will have the opportunity to learn first-hand knowledge developed by the
+core team at Google and apply the technology in the applications that they develop.
+Further, the module rounds out students’ software engineering skills, with emphasis on
+learning appropriate practices such as version source control, testing and team
+collaboration where they will gain further skills needed in the software development
+sector.
+Additional topics such as web security, and deployment may also be covered.
+Learning Outcomes
+1. Students will be able to use modern front-end frameworks and browser features to develop
+complex web user interfaces
+2. Students will be able to design and develop a significant web application that integrates front-end
+and back-end components
+3. Students will be able to practice employability skills through team working and presentations.
+Formative assessment
+Formative feedback on lab sheet exercises and later in the semester on coursework
+exercises to be provided during in person lab sessions.
+Summative assessment
+No Title %
+1 Implementing WebML 40
+2 Web Application Development Project 60
+Outline of content
+Introduction to WebML and tensorflow.js
+Running pre-trained ML model on a browser
+Running customed ML model
+Transfer learning in Tensorflow.js
+Introduction to Client-side driven Web Development with REACT
+JSX, Component, Properties, State and Context
+REACT router, useState hook, and REACT toastify
+REACT useEffect hook and Axios
+Redux Toolkit
+Node, database and putting all together
+Pre-requisites: CMP-4011A, CMP-4010B, CMP-5012B, CMP-5046B
+Other notes : To take this module, students must already have good JavaScript
+programming skills, and familiar with Node and Express and Web development. Knowledge
+of Database systems is also essentia

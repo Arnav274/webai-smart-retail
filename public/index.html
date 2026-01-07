@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebAI – Smart Retail Security</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>WebAI – Smart Retail Security</h1>
+      <p class="subtitle">COCO-SSD object detection demo (coursework scaffold)</p>
+    </div>
+    <div class="status-chip" id="model-status">Model: not loaded</div>
+  </header>
+
+  <main class="layout">
+    <section class="panel panel-controls">
+      <h2>Controls</h2>
+      <div class="control-group">
+        <label>Backend</label>
+        <select id="backend-select">
+          <option value="cpu">CPU</option>
+          <option value="webgl" selected>WebGL (GPU - Recommended)</option>
+          <option value="wasm">WASM</option>
+          <option value="webgpu">WebGPU (experimental)</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>Confidence threshold <span id="threshold-value">0.5</span></label>
+        <input type="range" id="threshold" min="0.1" max="0.9" step="0.05" value="0.5" />
+      </div>
+
+      <div class="control-group">
+        <label>Class filters</label>
+        <div id="class-filters" class="pill-list">
+          <!-- dynamically populated -->
+        </div>
+      </div>
+
+      <div class="control-group inline">
+        <button id="start-webcam">Start webcam</button>
+        <button id="stop-webcam" disabled>Stop webcam</button>
+      </div>
+
+      <div class="control-group">
+        <label for="file-input">Upload image / video</label>
+        <input type="file" id="file-input" accept="image/*,video/*" />
+        <div id="dropzone" class="dropzone">Drag & drop media here</div>
+        <button id="run-upload" disabled>Run detection on upload</button>
+      </div>
+
+      <div class="control-group inline">
+        <button id="screenshot" disabled>Save annotated PNG</button>
+        <button id="toggle-roi">Toggle ROI gate</button>
+        <button id="toggle-tracking">Toggle Tracking</button>
+      </div>
+
+      <div class="control-group">
+        <label for="batch-input">Batch mode</label>
+        <input type="file" id="batch-input" accept="image/*" multiple />
+        <button id="run-batch" disabled>Run batch detection</button>
+        <button id="export-csv" disabled>Export CSV</button>
+      </div>
+
+      <div class="control-group">
+        <label>Model info</label>
+        <div id="model-meta" class="meta-box">Name: –<br />Size: –<br />Backend: –</div>
+      </div>
+
+      <div class="control-group">
+        <label>Error / instructions</label>
+        <div id="messages" class="meta-box">Grant camera permission to start.</div>
+      </div>
+    </section>
+
+    <section class="panel panel-viewport">
+      <h2>Viewport</h2>
+      <div class="media-stage">
+        <video id="webcam" playsinline muted></video>
+        <canvas id="overlay"></canvas>
+        <div id="loading" class="loading">Loading model…</div>
+      </div>
+      <div class="metrics">
+        <span id="fps">FPS: –</span>
+        <span id="timing">Timing: – ms</span>
+      </div>
+    </section>
+
+    <section class="panel panel-insights">
+      <h2>Insights</h2>
+      <div class="stack">
+        <div>
+          <h3>Counts</h3>
+          <ul id="counts" class="mini-list"></ul>
+        </div>
+        <div>
+          <h3>Legend</h3>
+          <ul id="legend" class="mini-list"></ul>
+        </div>
+        <div>
+          <h3>Explainable UI</h3>
+          <div id="explain" class="meta-box">Top-k scores will appear here.</div>
+        </div>
+        <div>
+          <h3>ROI</h3>
+          <div id="roi-status" class="meta-box">ROI off</div>
+        </div>
+        <div>
+          <h3>Tracking</h3>
+          <div id="tracking-status" class="meta-box">Tracking off</div>
+        </div>
+        <div>
+          <h3>Batch gallery</h3>
+          <div id="batch-gallery" class="gallery"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>CMP-6057A Advanced Web Development - Smart Retail Security Object Detection System</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.16.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.2"></script>
+  <script>
+    // Fallback: check if libraries loaded
+    window.addEventListener('load', () => {
+      if (!window.tf) console.error('TensorFlow.js failed to load');
+      if (!window.cocoSsd) console.error('COCO-SSD failed to load');
+    });
+  </script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
