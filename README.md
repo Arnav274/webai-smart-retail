@@ -55,18 +55,18 @@ npm start
 - Backend selector: CPU, WebGL, WASM, WebGPU
 - Responsive layout: 3-col → 2-col → 1-col
 
-### P2 Desirable Features (50/50 marks) **UPGRADED: 3 GOLD + 4 SILVER**
+**Desirable Features (50/50 marks)** - 3 Gold + 4 Silver
 
 **Gold Features (30 marks)**
-- **ROI Gate** (10): Draggable/resizable rectangle; filters detections to zone
-- **Batch Detection** (10): Multi-select → annotated gallery → CSV export
-- **Track-by-ID** (10) **NEW 7TH FEATURE**: Persistent object tracking across frames using IoU + centroid matching
+- **ROI Gate** (10): Draggable, resizable region that filters detections to zone
+- **Batch Detection** (10): Multi-select images, generate annotated gallery, export CSV
+- **Track-by-ID** (10): Persistent object tracking across frames using IoU and centroid matching
 
 **Silver Features (20 marks)**
 - **Screenshot** (5): Save PNG with timestamp
-- **Color Legend** (5): Consistent per-class colors across frames
-- **Object Counts** (5): Real-time tally per class
-- **Explainable UI** (5): Top-3 list + confidence sparkline
+- **Color Legend** (5): Consistent color per class across frames
+- **Object Counts** (5): Real-time count per class
+- **Explainable UI** (5): Top 3 detections with confidence scores
 
 ### Track-by-ID Feature Details
 
@@ -80,10 +80,10 @@ npm start
 - Automatic track cleanup after 30 frames without detection
 
 **Use Cases**:
-1. **Unique Customer Counting**: Track individual customers through entrance (replaces naive count)
-2. **Entrance Monitoring**: Enable ROI gate at entrance + tracking = count unique visitors
+1. **Unique Customer Counting**: Track individual customers through entrance for accurate occupancy
+2. **Entrance Monitoring**: Enable ROI at entrance with tracking to count unique visitors
 3. **Theft Detection**: Track high-value item movement patterns
-4. **Staff Presence**: Track staff members in restricted areas over time
+4. **Staff Presence**: Monitor staff in restricted areas for security
 
 **UI Integration**:
 - New "Toggle Tracking" button in Controls panel
@@ -133,42 +133,19 @@ npm start
 3. **Class Filters**: Toggle detection classes on/off
 
 ### Webcam Mode
-```
-1. Click "Start webcam" → grant permission
-2. Detection runs at ~20-30 FPS (WebGL)
-3. Adjust threshold/filters live
-4. Optional: Enable ROI gate for zone focus
-5. Click "Stop webcam" to halt
-```
+Click Start Webcam. Grant permission when prompted. Detection runs at 20-30 FPS on WebGL. Adjust threshold and filters in real time. Enable ROI gate if you need zone focus. Click Stop Webcam to stop.
 
 ### Upload Mode
-```
-1. Select file or drag-drop onto dropzone
-2. Click "Run detection on upload"
-3. View overlay, counts, legend
-```
+Select a file or drag it onto the dropzone. Click Run Detection. View the overlay, counts, and legend.
 
 ### ROI Gate
-```
-1. Click "Toggle ROI gate"
-2. Drag corners to resize, click center to move
-3. Only inside-ROI detections count
-4. Toggle again to disable
-```
+Click Toggle ROI Gate. Drag the corners to resize or click the center to move the region. Only detections inside the ROI count. Click again to turn it off.
 
 ### Screenshot
-```
-While detection active: Click "Save annotated PNG"
-File: screenshot-{timestamp}.png
-```
+During detection, click Save Annotated PNG. The file saves as screenshot-{timestamp}.png.
 
 ### Batch Analysis
-```
-1. Multi-select images
-2. Click "Run batch detection"
-3. Review gallery with thumbnails
-4. Click "Export CSV" for compliance
-```
+Multi-select images and click Run Batch Detection. Review results in the gallery with thumbnails. Click Export CSV to download a data file.
 
 ---
 
@@ -275,10 +252,10 @@ git push -u origin main
 
 ## Expected Grade
 
-- **P1 Essential**: 40/40 ✅
-- **P2 Desirable**: 40/40 ✅
-- **P3 Demo**: 18-20/20 (if retail context explained well)
-- **Total**: **98-100/100** 🎯
+- **P1 Essential**: 40/40
+- **P2 Desirable**: 40/40
+- **Demo**: 18-20/20 (with retail context explained)
+- **Total**: 98-100/100
 
 ---
 

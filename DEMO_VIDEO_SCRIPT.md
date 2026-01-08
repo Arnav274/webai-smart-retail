@@ -24,7 +24,7 @@
 
 ### SECTION 1: Introduction (1 minute)
 **What to say:**
-> "Hello, this is [Your Name] demonstrating WebAI, a Smart Retail Security Detection System for CMP-6057A Advanced Web Development. This application uses TensorFlow.js and the COCO-SSD neural network to perform real-time object detection in retail environments. The system can monitor store entrances, high-value areas, and checkout zones by detecting and classifying people, bags, items, and potential security concerns. I'll show you all the essential and desirable features implemented in this coursework."
+Hello. I am demonstrating WebAI, a Smart Retail Security Detection System for CMP-6057A Advanced Web Development. This application uses TensorFlow.js and the COCO-SSD neural network to perform real-time object detection in retail environments. The system monitors store entrances, high-value areas, and checkout zones. It detects people, bags, items, and flags potential security concerns. I will show you all the essential and desirable features implemented.
 
 **What to show:**
 - Browser at http://localhost:3000 with page loaded
@@ -33,9 +33,9 @@
 
 ---
 
-### SECTION 2: Startup & Model Loading (1 minute)
+### SECTION 2: Startup and Model Loading (1 minute)
 **What to say:**
-> "The application loads the COCO-SSD model automatically at startup. You can see the loading overlay here. The model is a pre-trained neural network from TensorFlow.js that recognizes over 90 object classes. Once loaded, a metadata panel displays the model name, size (26.7 MB for the full model), the active backend (WebGL for GPU acceleration), and TensorFlow.js version."
+The application loads the COCO-SSD model automatically at startup. You can see the loading overlay. The model is a pre-trained neural network from TensorFlow.js that recognizes over 90 object classes. Once loaded, a metadata panel displays the model name, size in megabytes, the active backend for computation, and TensorFlow.js version.
 
 **What to show:**
 - Refresh page to show "Loading model…" overlay
@@ -46,9 +46,9 @@
 
 ---
 
-### SECTION 3: Backend Selector & Performance (45 seconds)
+### SECTION 3: Backend Selector and Performance (45 seconds)
 **What to say:**
-> "The system supports multiple backends for different hardware. WebGL uses GPU acceleration and provides the best performance, around 20-30 FPS. We can also use CPU for broader compatibility, WASM, or WebGPU if available. Let me show you switching between backends."
+The system supports multiple backends for different hardware. WebGL uses GPU acceleration and provides the best performance, about 20-30 frames per second. We can also use CPU for broader compatibility, WASM, or WebGPU if available. Let me show you switching between backends.
 
 **What to show:**
 - Click backend selector dropdown
@@ -59,9 +59,9 @@
 
 ---
 
-### SECTION 4: Webcam Detection - Real-time Monitoring (2 minutes)
+### SECTION 4: Webcam Detection for Real-time Monitoring (2 minutes)
 **What to say:**
-> "Now let's activate the webcam for real-time monitoring. This is the primary use case for retail security. I'll click Start Webcam and grant camera permission."
+Now I will activate the webcam for real-time monitoring. This is the primary use case for retail security. Let me click Start Webcam and grant camera permission.
 
 **What to show:**
 - Click "Start webcam" button
