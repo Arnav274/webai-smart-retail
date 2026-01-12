@@ -282,16 +282,7 @@ Optimization techniques:
 - Verify threshold allows some detections through
 - Check that uploaded images contain detectable objects
 
-## Submission Checklist
+---
 
-- [x] Source code pushed to CMP stugit repository
-- [ ] userguide.docx submitted to Blackboard (single A4 page with git URL)
-- [ ] Demo video recorded (.mp4, under 15 minutes) and submitted to Blackboard
-
-## Module Information
-
-**Module**: CMP-6057A Advanced Web Development  
-**Assignment**: WebAI Implementation  
-**Student ID**: 100464305  
-**Due Date**: 12 January 2026 at 15:00  
-**Repository**: https://stugit.cmp.uea.ac.uk/rqc23shu/webai.git
+Built for CMP-6057A Advanced Web Development coursework.  
+Repository: https://stugit.cmp.uea.ac.uk/rqc23shu/webai.git
