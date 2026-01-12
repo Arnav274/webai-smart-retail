@@ -246,18 +246,36 @@ batchInput.addEventListener('change', () => {
 
 runBatchBtn.addEventListener('click', async () => {
   if (!batchInput.files.length || !state.model) return;
-  const { results, gallery } = await runBatch(
-    batchInput.files,
-    state.model,
-    state.threshold,
-    state.classFilter,
-    applyROI,
-    state.colorMap
-  );
-  state.batchResults = results;
-  batchGalleryEl.innerHTML = '';
-  gallery.forEach(node => batchGalleryEl.appendChild(node));
-  setMessage(messagesEl, 'Batch complete. Review overlays below; export CSV for summary.');
+  
+  // Disable buttons during batch processing
+  runBatchBtn.disabled = true;
+  exportCsvBtn.disabled = true;
+  batchGalleryEl.innerHTML = '<p>Processing batch...</p>';
+  setMessage(messagesEl, 'Processing batch detection...');
+  
+  try {
+    const { results, gallery } = await runBatch(
+      batchInput.files,
+      state.model,
+      state.threshold,
+      state.classFilter,
+      applyROI,
+      state.colorMap
+    );
+    state.batchResults = results;
+    batchGalleryEl.innerHTML = '';
+    gallery.forEach(node => batchGalleryEl.appendChild(node));
+    
+    // Enable export button after batch completes
+    exportCsvBtn.disabled = false;
+    runBatchBtn.disabled = false;
+    setMessage(messagesEl, `Batch complete: ${results.length} detections across ${gallery.length} images. Review overlays below; export CSV for summary.`);
+  } catch (err) {
+    console.error('Batch detection error:', err);
+    batchGalleryEl.innerHTML = `<p style="color: red;">Error: ${err.message}</p>`;
+    setMessage(messagesEl, `Batch detection failed: ${err.message}`);
+    runBatchBtn.disabled = false;
+  }
 });
 
 exportCsvBtn.addEventListener('click', () => {
@@ -302,6 +320,11 @@ async function runSingleDetection(media) {
     state.lastDetections = detections;
     const elapsed = performance.now() - start;
     timingEl.textContent = `Timing: ${elapsed.toFixed(1)} ms`;
+    
+    // Draw the media to the canvas first
+    const ctx = canvasEl.getContext('2d');
+    ctx.drawImage(media, 0, 0, canvasEl.width, canvasEl.height);
+    
     drawDetections(canvasEl, detections, state.colorMap, state.trackingEnabled);
     drawROIOverlay(canvasEl);
     renderCounts(countsEl, detections);

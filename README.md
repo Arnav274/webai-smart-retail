@@ -1,118 +1,178 @@
 # WebAI - Smart Retail Security Detection System
 
-**Module**: CMP-6057A Advanced Web Development  
-**Application**: Real-time object detection for retail loss prevention using TensorFlow.js
+Real-time object detection for retail environments using TensorFlow.js and COCO-SSD.
 
-Browser-based ML application using COCO-SSD pre-trained model to monitor store entrances, checkouts, and high-value areas in real-time.
+This browser-based app analyzes live webcam feeds or uploaded media to detect people, bags, and items. Built for CMP-6057A Advanced Web Development.
 
----
+## Setup
 
-## Quick Start
+Prerequisites:
+- Node.js 18 or later
+- Modern browser (Chrome or Firefox recommended)
+- Webcam optional but useful for testing
 
 ```bash
 npm install
 npm start
-# Open http://localhost:3000
 ```
 
-**Prerequisites**: Node.js 18+, modern browser with WebGL, webcam for live mode
+Then navigate to http://localhost:3000
 
----
+If `npm start` fails, verify Node.js 18+ is installed and network allows CDN for TensorFlow.js and COCO‑SSD.
+## Build
 
-## Implementation Summary
+The application is already built. Source files are in /public:
+- index.html: main page
+- app.js: entry point
+- detector.js, tracker.js, roi.js, batch.js, ui.js, renderer.js: feature modules
+- styles.css: styling
 
-### ✅ All Minimum Requirements Met
-- Client-side JavaScript with TensorFlow.js COCO-SSD processing
-- Model loads and detects objects successfully
-- **Both** webcam AND image/video upload modes
-- Bounding boxes with class labels and confidence scores
-- User-friendly dark theme interface
-- Express server serving /public folder
-- Error handling for camera permissions
+To minify or bundle for production:
+```bash
+# Option 1: Use esbuild for bundling
+npm install --save-dev esbuild
+npx esbuild public/app.js --bundle --outfile=public/app.bundle.js
 
-### P1 Essential Features (40/40 marks)
+# Option 2: Serve as-is (current setup)
+npm start
+```
 
-**Model Integration (10)**
-- Startup loading with visible overlay
-- Warmup pass for tensor pre-allocation
-- Cleanup via `tf.tidy()` (no memory leaks)
-- Metadata panel: name, size, backend, TF version
+Current setup serves files as-is without bundling. Suitable for development and coursework submission.
+## What's Included
 
-**Media Inputs (10)**
-- Webcam: Start/Stop with real-time loop (~20-30 FPS WebGL)
-- Image/video upload via file picker
-- Drag-drop file support
-- Live threshold/filter updates
+The application meets all minimum requirements for the assignment:
+- Client-side JavaScript handles COCO-SSD model integration and detection logic
+- Webcam streaming and static image/video upload support
+- Bounding boxes with class labels and confidence percentages
+- Node Express server serves index.html from the public folder
+- Error handling for camera permissions and model loading
+ - Accessibility labels and keyboard shortcuts for core actions
 
-**Rendering & UI (10)**
-- Canvas overlays with colored bounding boxes
-- Class labels with confidence % (e.g., "person 93.6%")
-- Class filter toggles
-- Confidence slider (0.1–0.9, step 0.05)
+## Implementation Details
 
-**Performance & Responsiveness (10)**
-- FPS counter + timing display (ms/detection)
+### P1 Essential Features (40 marks)
+
+**Model Integration (10 marks)**
+- COCO-SSD loads at startup with visual loading indicator
+- Warmup pass pre-allocates tensors for consistent performance  
+- Memory management using tf.tidy() prevents tensor leaks
+- Metadata panel displays model version, size, backend, and TensorFlow.js version
+
+**Media Inputs (10 marks)**
+- Webcam mode with start/stop controls and permission handling
+- File upload supports images and videos via file picker or drag-and-drop
+- Real-time adjustment of threshold and filters during detection
+
+**Rendering & UI (10 marks)**
+- Canvas overlay displays bounding boxes with class labels and confidence scores
+- Toggle filters for 8 retail-relevant classes: person, backpack, handbag, suitcase, bottle, cup, laptop, cell phone
+- Confidence threshold slider adjustable from 0.1 to 0.9
+
+**Performance & Responsiveness (10 marks)**
+- Live FPS counter and per-frame timing display
 - Backend selector: CPU, WebGL, WASM, WebGPU
-- Responsive layout: 3-col → 2-col → 1-col
+- Responsive layout adapts to mobile, tablet, and desktop screens
+ - Optional keyboard shortcuts to reduce interaction latency
 
-**Desirable Features (50/50 marks)** - 3 Gold + 4 Silver
+### Marking Mapping (Examiner-Friendly)
 
-**Gold Features (30 marks)**
-- **ROI Gate** (10): Draggable, resizable region that filters detections to zone
-- **Batch Detection** (10): Multi-select images, generate annotated gallery, export CSV
-- **Track-by-ID** (10): Persistent object tracking across frames using IoU and centroid matching
+**P1 Essential (40%)**
+- Model Integration: Loading overlay, warmup, safe tensor lifecycle, metadata panel
+- Media Inputs: Webcam start/stop; image/video upload + drag & drop
+- Rendering & UI: Canvas overlay, labels + confidences, class filters, threshold slider
+- Performance: FPS + timing, backend selector, responsive layout
 
-**Silver Features (20 marks)**
-- **Screenshot** (5): Save PNG with timestamp
-- **Color Legend** (5): Consistent color per class across frames
-- **Object Counts** (5): Real-time count per class
-- **Explainable UI** (5): Top 3 detections with confidence scores
+**P2 Desirable (40% – 7 features)**
+- Gold (30%): ROI gate; Track‑by‑ID; Batch detection with gallery + CSV
+- Silver (20%): Screenshot; Per‑class color legend; Object counts; Explainable UI (top‑k + confidence history)
 
-### Track-by-ID Feature Details
+Note: Accessibility & shortcuts are added polish showing professionalism (module LO), not counted as distinct P2 features.
 
-**Algorithm**: Centroid + IoU matching
-- Maintains active tracks (object history with ID, bbox, centroid, age)
-- Matches new detections to existing tracks using:
-  - IoU (Intersection over Union) > 0.3 threshold
-  - Centroid distance < 100 pixels
-  - Same class requirement
-- Score = IoU - (distance / 500)
-- Automatic track cleanup after 30 frames without detection
+### P2 Desirable Features (40 marks - 7 features selected)
 
-**Use Cases**:
-1. **Unique Customer Counting**: Track individual customers through entrance for accurate occupancy
-2. **Entrance Monitoring**: Enable ROI at entrance with tracking to count unique visitors
-3. **Theft Detection**: Track high-value item movement patterns
-4. **Staff Presence**: Monitor staff in restricted areas for security
+**Gold Features (30 marks):**
 
-**UI Integration**:
-- New "Toggle Tracking" button in Controls panel
-- Tracking status displayed in Insights panel
-- Labels change format: "person 85%" → "person #5 85%" (when tracking enabled)
-- Track state resets on toggle to avoid ID collision
+1. **ROI Gate (10 marks)** - Region of Interest detection
+   - Drag rectangle to define detection zone
+   - Resize using corner handles, move by center drag
+   - Only objects with 5% bbox overlap are counted
+   - Use case: Monitor specific store zones (entrance, checkout, displays)
+
+2. **Batch Detection (10 marks)** - Process multiple images
+   - Select multiple images for automated processing
+   - Gallery view shows annotated thumbnails
+   - Export results to CSV with filename, class, confidence, bbox coordinates
+   - Useful for analyzing recorded footage or batch inventory checks
+
+3. **Track-by-ID (10 marks)** - Persistent object tracking across frames
+   - Algorithm: Combined IoU (Intersection over Union) + centroid distance matching
+   - Adaptive thresholds for small objects (phones) vs large objects (people)
+   - Track IDs survive up to 30 frames without detection
+   - Labels display as "person #5 85%" when tracking enabled
+   - Use cases: Unique customer counting, movement pattern analysis, theft detection
+
+**Silver Features (20 marks):**
+
+4. **Screenshot (5 marks)** - Save annotated frames as PNG with timestamp
+5. **Color Legend (5 marks)** - Consistent per-class colors with visible legend
+6. **Object Counts (5 marks)** - Real-time tally of detected objects by class
+7. **Explainable UI (5 marks)** - Top 3 detections list + confidence graph over last 30 frames
 
 ---
 
-## Retail Security Context
+## Application Context: Retail Security
 
-### Why These COCO-SSD Classes?
+This implementation focuses on 8 COCO-SSD classes relevant to retail security:
 
-**Person Detection**
-- Customer counting for occupancy monitoring
-- Unauthorized access detection after-hours
-- Staff presence verification in sensitive areas
+**Person Detection:**
+- Customer counting for occupancy limits
+- After-hours unauthorized access detection
+- Staff presence verification in restricted areas
 
-**Bag Detection** (backpack, handbag, suitcase)
-- Entrance bag-check policy enforcement
-- Concealment risk flagging (loss prevention)
-- Unattended bag alerts (security threat)
+**Bag Detection** (backpack, handbag, suitcase):
+- Entrance bag-check policy enforcement  
+- Loss prevention flagging for concealment risks
+- Unattended bag security alerts
 
-**High-Value Items** (laptop, cell phone)
-- Checkout verification (items in cart match scanned)
-- Electronics display monitoring
-- Returns/exchanges counter tracking
+## Accessibility & Shortcuts
 
-**Consumables** (bottle, cup)
+- Accessible labels on inputs/buttons; messages announced with `aria-live="polite"`
+- Keyboard shortcuts: W (start/stop webcam), T (toggle tracking), R (toggle ROI), S (screenshot), +/- (adjust threshold)
+- Benefits: Faster demo flow, clearer UX for assessors, aligns with professionalism LO
+
+## Troubleshooting
+
+- TensorFlow.js failed to load: Check internet connectivity and that browser allows CDN scripts. See console errors.
+- Camera permission denied: Allow camera in browser site settings; refresh and retry.
+- Camera in use: Close other apps (Teams/Zoom/Meet) then try again.
+- Backend switch fails: Falls back to CPU automatically; performance may be lower.
+- Batch detection slow: Reduce image count or resolution; WebGL backend recommended.
+
+## Tested Environments
+
+- Chrome 120+ (WebGL, CPU)
+- Firefox 120+ (WebGL, CPU)
+- Edge 120+ (WebGL, CPU)
+
+Performance varies by GPU/driver; WebGL recommended. If WebGL is unavailable, CPU/WASM remain functional.
+
+**High-Value Items** (laptop, cell phone):
+- Checkout verification (ensure items scanned match cart contents)
+- Display area monitoring for theft prevention
+- Returns counter item tracking
+
+**Consumables** (bottle, cup):
+- Spill hazard detection
+- Pre-checkout consumption monitoring
+- Inventory shrinkage tracking
+
+### ROI Gate Applications:
+- **Entrance**: Count unique customers, screen bags
+- **Checkout**: Verify items, flag high-value electronics
+- **Display Areas**: Alert when multiple people near jewelry/electronics
+- **Exit**: Cross-reference detections with transaction data
+
+## Usage Guide
 - Spill hazard detection
 - Inventory gap identification
 - Pre-checkout consumption monitoring
@@ -127,165 +187,111 @@ npm start
 
 ## Usage
 
-### Configuration
-1. **Backend**: WebGL (GPU, ~3-4x faster) or CPU (broader compatibility)
-2. **Confidence**: 0.1–0.9 slider (balance sensitivity vs false positives)
-3. **Class Filters**: Toggle detection classes on/off
+**Webcam Mode:**
+1. Click "Start webcam" and grant permissions
+2. Detection runs automatically
+3. Adjust confidence threshold slider to filter low-confidence detections
+4. Toggle class filters to show/hide specific objects
+5. Enable ROI gate for zone-specific monitoring
+6. Enable tracking for persistent object IDs
 
-### Webcam Mode
-Click Start Webcam. Grant permission when prompted. Detection runs at 20-30 FPS on WebGL. Adjust threshold and filters in real time. Enable ROI gate if you need zone focus. Click Stop Webcam to stop.
+**Upload Mode:**
+1. Select file or drag media onto dropzone
+2. Click "Run detection on upload"
+3. View annotated results
 
-### Upload Mode
-Select a file or drag it onto the dropzone. Click Run Detection. View the overlay, counts, and legend.
+**Batch Processing:**
+1. Select multiple images using batch file input
+2. Click "Run batch detection"
+3. Review annotated thumbnails in gallery
+4. Click "Export CSV" to download results
 
-### ROI Gate
-Click Toggle ROI Gate. Drag the corners to resize or click the center to move the region. Only detections inside the ROI count. Click again to turn it off.
+**Advanced Features:**
+- ROI: Click "Toggle ROI gate", drag corners to resize, drag center to move
+- Tracking: Click "Toggle Tracking" to assign persistent IDs to moving objects
+- Screenshot: Click "Save annotated PNG" to download current frame
 
-### Screenshot
-During detection, click Save Annotated PNG. The file saves as screenshot-{timestamp}.png.
-
-### Batch Analysis
-Multi-select images and click Run Batch Detection. Review results in the gallery with thumbnails. Click Export CSV to download a data file.
-
----
-
-## Architecture
+## Project Structure
 
 ```
-WebAI/
-├── server.js              # Express server
-├── package.json
-├── public/
-│   ├── index.html         # Main UI (3-col responsive)
-│   ├── app.js             # Event handling & state
-│   ├── detector.js        # TF.js model & detection
-│   ├── renderer.js        # Canvas drawing
-│   ├── roi.js             # ROI drag/resize
-│   ├── batch.js           # Batch processing
-│   ├── ui.js              # UI helpers
-│   └── styles.css         # Dark theme
-└── userguide.docx         # A4 submission doc
+server.js          - Express server serving static files from /public
+public/
+  index.html       - Main interface layout
+  app.js           - Application state and event handlers
+  detector.js      - TensorFlow.js model loading and detection
+  renderer.js      - Canvas drawing utilities
+  roi.js           - Region of Interest drag/resize logic
+  tracker.js       - Object tracking algorithm (IoU + centroid)
+  batch.js         - Multi-image processing and CSV export
+  ui.js            - UI updates (counts, legend, filters)
+  styles.css       - Dark theme styling
 ```
 
-**Dependencies**:
-- TensorFlow.js v4.16.0 (CDN)
-- COCO-SSD v2.2.2 (CDN)
-- Express v4.18.2 (npm)
+Dependencies loaded from CDN:
+- TensorFlow.js 4.16.0
+- COCO-SSD 2.2.2
 
-**Model**: SSD MobileNet v2, 26.7 MB (full), 90 classes
+COCO-SSD model details:
+- Size: 26.7 MB (full model) or 5.4 MB (lite variant)
+- Classes: 90 object categories
+- Architecture: Single Shot Detector
 
----
+## Performance Notes
 
-## Performance
+Expected performance on modern hardware:
+- **WebGL backend**: 25-30 FPS (recommended)
+- **CPU backend**: 5-10 FPS
+- **Detection latency**: 50-150ms per frame
+- **Memory usage**: 100-200 MB with GPU acceleration
 
-- **Webcam**: 25-30 FPS (WebGL), 5-10 FPS (CPU)
-- **Single Detection**: 50-150 ms
-- **Memory**: ~100-200 MB GPU (WebGL)
-- **Tensor Cleanup**: Automatic via `tf.tidy()`
-
----
+Optimization techniques:
+- Warmup pass pre-allocates tensors for consistent frame times
+- tf.tidy() ensures automatic tensor cleanup
+- Canvas operations use hardware acceleration where available
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| Camera denied | Check browser privacy settings; try incognito |
-| Model fails | Verify internet (CDN); clear cache |
-| Low FPS | Use WebGL; raise confidence threshold |
-| No detections | Lower threshold; check class filters; verify lighting |
-| ROI not working | Ensure "ROI on" status; resize to expected area |
-| CSV empty | Run batch detection first; check threshold |
+**Camera not working:**
+- Check browser permissions in settings
+- Try incognito/private browsing mode
+- Ensure no other apps are using the camera
 
----
+**Model fails to load:**
+- Verify internet connection (model loads from CDN)
+- Check browser console for errors
+- Try clearing browser cache
 
-## Demo Video (≤15 min)
+**Slow performance:**
+- Switch to WebGL backend in controls
+- Increase confidence threshold to reduce detections
+- Close other resource-intensive browser tabs
 
-See [DEMO_VIDEO_SCRIPT.md](DEMO_VIDEO_SCRIPT.md) for narration script with timing.
+**No detections appearing:**
+- Lower confidence threshold (default 0.5)
+- Check that class filters aren't all disabled
+- Ensure adequate lighting for webcam
+- Verify media is loaded correctly for uploads
 
-**Key sections**:
-1. Intro + retail context (1 min)
-2. Model loading + metadata (1 min)
-3. Webcam detection + FPS (2 min)
-4. ROI gate (1.5 min)
-5. Upload image (1 min)
-6. Screenshot (30 sec)
-7. Batch + CSV (1.5 min)
-8. Explainable UI (45 sec)
-9. Responsive design (45 sec)
-10. Technical summary (30 sec)
+**ROI not working:**
+- Ensure ROI is toggled on (check ROI status panel)
+- Resize ROI to cover area where objects appear
+- Check that at least 5% of object bbox overlaps ROI
 
-**Critical**: Explain why COCO-SSD classes matter for retail security (see context above)
-
----
+**Batch CSV empty:**
+- Run batch detection before exporting
+- Verify threshold allows some detections through
+- Check that uploaded images contain detectable objects
 
 ## Submission Checklist
 
-### Deliverables
-- [ ] Source code pushed to **CMP stugit**
-- [ ] README.md with setup (this file)
-- [ ] **userguide.docx** to Blackboard
-- [ ] **Demo video** (.mp4, ≤15 min) to Blackboard
+- [x] Source code pushed to CMP stugit repository
+- [ ] userguide.docx submitted to Blackboard (single A4 page with git URL)
+- [ ] Demo video recorded (.mp4, under 15 minutes) and submitted to Blackboard
 
-### Git Commands
-```bash
-git init
-git add .
-git commit -m "WebAI coursework - Smart Retail Security
-
-P1 (40 marks): Model integration, media inputs, rendering, performance
-P2 (40 marks): 2 Gold (ROI, batch) + 4 Silver (screenshot, legend, counts, explainable)
-Context: Real-time retail loss prevention monitoring"
-
-git remote add origin [YOUR_STUGIT_URL]
-git push -u origin main
-```
-
-### Pre-Submission Tests
-- [ ] `npm install` works
-- [ ] `npm start` launches on port 3000
-- [ ] Webcam detection functional
-- [ ] All P1 + P2 features working
-- [ ] No console errors
-- [ ] Responsive layout tested
-
----
-
-## Expected Grade
-
-- **P1 Essential**: 40/40
-- **P2 Desirable**: 40/40
-- **Demo**: 18-20/20 (with retail context explained)
-- **Total**: 98-100/100
-
----
-
-## Technical Notes
-
-**Tensor Management**: All detections wrapped in `tf.tidy()` for automatic disposal. Warmup pass ensures GPU tensors pre-allocated.
-
-**Backend Selection**: User can switch at runtime. WebGL for GPU; fallback to CPU for compatibility.
-
-**ROI Logic**: Pointer events for drag/resize. Intersection test filters detections:
-```javascript
-const intersects = !(x + w < roi.x || roi.x + roi.w < x || 
-                     y + h < roi.y || roi.y + roi.h < y);
-```
-
-**Color Consistency**: HSL-based hashing ensures same class → same color across frames and batches.
-
----
-
-## References
-
-- [TensorFlow.js Docs](https://js.tensorflow.org/)
-- [COCO-SSD GitHub](https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd)
-- [Course Portal](https://portal.uea.ac.uk/) - CMP-6057A
-
----
+## Module Information
 
 **Module**: CMP-6057A Advanced Web Development  
-**Instructor**: Dr Jeannette Chin | Dr Cheng Wang  
-**Due**: 12 January 2026, 15:00  
-**Submission**: Blackboard + stugit
-
-**For support**: Check userguide.docx or FINAL_SUBMISSION_GUIDE.md
+**Assignment**: WebAI Implementation  
+**Student ID**: 100464305  
+**Due Date**: 12 January 2026 at 15:00  
+**Repository**: https://stugit.cmp.uea.ac.uk/rqc23shu/webai.git
