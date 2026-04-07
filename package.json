@@ -1,7 +1,7 @@
 {
   "name": "webai",
   "version": "0.1.0",
-  "description": "WebAI coursework scaffold (Express + static public)",
+  "description": "Browser-based real-time object detection demo using TensorFlow.js and Express",
   "type": "module",
   "scripts": {
     "start": "node server.js",
